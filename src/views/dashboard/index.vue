@@ -38,7 +38,7 @@ export default {
   created() {
     let loading = this.$loading({
       lock: true,
-      text: '登录中',
+      text: 'Loading',
       spinner: 'el-icon-loading',
       background: 'rgba(255, 255, 255, 0.8)'
     });
