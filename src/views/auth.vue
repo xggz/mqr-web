@@ -18,13 +18,16 @@ export default {
 @import "~@/styles/index.scss";
 
 .auth-container {
+  margin: 6rem;
   display: flex;
   flex-direction: row;
   -webkit-box-flex: 1;
+  border-radius: 5px;
+  overflow: hidden;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
-  width: 100%;
-  height: 100%;
+  box-shadow: 0 0 13px 0 #eaeaea;
+  height: 75%;
   justify-content: space-between;
 }
 </style>

@@ -1,17 +1,18 @@
 <template>
   <div class="auth-content">
-    <h2 class="title">Welcome</h2>
+    <h2 class="title">登录茉莉机器人</h2>
     <div class="content-box">
       <el-form ref="loginForm" :rules="rules" :model="loginForm">
-        <el-form-item prop="username">
+        <el-form-item prop="username" class="form-item">
           <el-input ref="username" v-model="loginForm.username" placeholder="用户名" suffix-icon="el-icon-user"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="password" class="form-item">
           <el-input ref="password" v-model="loginForm.password" placeholder="密码" show-password></el-input>
         </el-form-item>
-        <el-form-item size="large">
-          <el-button type="primary" @click="loginSubmit">登录</el-button>
+        <el-form-item size="large" class="form-item" style="margin-top: 5px">
+          <el-button type="success" @click="loginSubmit" id="login-btn">登录</el-button>
         </el-form-item>
+        <p class="agreement">我同意并遵守服务协议</p>
       </el-form>
     </div>
   </div>
@@ -82,14 +83,29 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #f7f0f0;
+  background-color: white;
   .title {
     font-size: 30px;
+    margin: 2rem 0;
   }
   .content-box {
-    min-width: 660px;
-    height: 360px;
+    width: 60%;
+    height: 300px;
     background-color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 6px #ffffff;
+    .form-item {
+      margin-bottom: 2rem;
+    }
+    #login-btn {
+      width: 100%;
+    }
+    .agreement {
+      text-align: center;
+      font-size: 13px;
+      color: #545c64;
+    }
   }
 }
 </style>

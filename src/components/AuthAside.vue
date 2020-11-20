@@ -14,6 +14,7 @@ export default {
 <style lang="less" scoped>
 .auth-aside {
   display: flex;
+  flex: 1 1 12%;
   flex-direction: column;
   width: 460px;
   height: 100%;
