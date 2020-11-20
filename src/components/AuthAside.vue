@@ -16,15 +16,13 @@ export default {
   display: flex;
   flex: 1 1 12%;
   flex-direction: column;
-  width: 460px;
   height: 100%;
-  background-color: #545c64;
+  background-color: #72afec;
   color: #fff;
   justify-content: space-around;
   .title {
     width: 100%;
-    height: 80px;
-    line-height: 80px;
+    height: 45px;
     font-size: 60px;
     text-align: center;
     font-family: fantasy;

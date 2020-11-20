@@ -87,6 +87,7 @@ export default {
   .title {
     font-size: 30px;
     margin: 2rem 0;
+    color: #4e4e4e;
   }
   .content-box {
     width: 60%;
