@@ -13,10 +13,10 @@ axios.defaults.baseURL = conf.baseUrl;
 axios.interceptors.request.use(
     config => {
         config.headers = conf.headers;
-        if (config.url != conf.loginUrl) {
-            const authorization = getCache('authorization');
-            if (authorization != null) {
-                config.headers['Authorization'] = authorization;
+        if (conf.ignoreAuthUrls.indexOf(config.url) < 0) {
+            const accessToken = getCache('Access-Token');
+            if (accessToken != null) {
+                config.headers['Access-Token'] = accessToken;
             }
         }
         return config;

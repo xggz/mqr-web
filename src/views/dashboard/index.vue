@@ -1,32 +1,17 @@
 <template>
-  <div class="raw-context">
-    <div class="profile-container">
-      <div class="profile-content">
-        <div class="profile-nav">
-          <el-menu default-active="1" background-color="#545c64" text-color="#fff"
-                   active-text-color="#ffd04b" class="profile-menu">
-            <el-menu-item index="1">
-              <i class="el-icon-cpu"></i>
-              <span slot="title">控制面板</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <i class="el-icon-s-grid"></i>
-              <span slot="title">插件管理</span>
-            </el-menu-item>
-            <el-menu-item index="3">
-              <i class="el-icon-s-data"></i>
-              <span slot="title">数据统计</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-              <i class="el-icon-s-promotion"></i>
-              <span slot="title">API调试台</span>
-            </el-menu-item>
-            <el-menu-item index="5">
-              <i class="el-icon-setting"></i>
-              <span slot="title">网站配置</span>
-            </el-menu-item>
-          </el-menu>
+  <div class="profile-box">
+    <div class="box-header">
+      <div class="avatar-wrapper">
+        <div class="avatar-box">
+          <el-image src="http://q1.qlogo.cn/g?b=qq&nk=qq号&s=100" fit="fit"
+                    style="width: 100px; height: 100px; border-radius: 50%">
+            <div slot="error" class="image-slot">机器人未配置</div>
+          </el-image>
         </div>
+      </div>
+      <div class="robot-info">
+        <span></span>
+        <span></span>
       </div>
     </div>
   </div>
@@ -38,29 +23,53 @@ export default {
 }
 </script>
 
-<style>
-.profile-container {
+<style lang="less">
+.profile-box {
   display: flex;
-  width: 960px;
-  margin: 30px auto 0;
-  flex-direction: row;
-  background: #fff;
-  box-sizing: border-box;
-}
-
-.profile-content {
   flex: 1;
-  flex-basis: 0;
-  overflow-y: auto;
-  box-sizing: border-box;
 }
 
-.profile-nav {
-  width: 180px;
-  height: 100%;
+.box-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
 }
 
-.profile-menu {
+.avatar-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-box {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  border: 3px dotted #666;
+  border-radius: 50%;
+}
+
+.image-slot {
+  width: 100%;
   height: 100%;
+  line-height: 100px;
+  text-align: center;
+  background-color: #666;
+  color: #999;
+  font-size: 13px;
+}
+
+.robot-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 15px;
+  span {
+    display: flex;
+    color: #999;
+    margin: 0 10px;
+  }
 }
 </style>
