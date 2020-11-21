@@ -1,4 +1,4 @@
-import { getQuery } from "@/request/http";
+import { getQuery, postBody } from "@/request/http";
 
 /**
  * 获取机器人信息
@@ -7,4 +7,14 @@ import { getQuery } from "@/request/http";
  */
 export function getRobotInfo() {
     return getQuery('/sys-setting/robot-info', null);
+}
+
+/**
+ * 保存机器人信息
+ *
+ * @param data
+ * @returns {Promise}
+ */
+export function saveRobotInfo(data) {
+    return postBody('/sys-setting/robot-info', data);
 }

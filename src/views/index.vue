@@ -24,7 +24,7 @@
                 <span slot="title">API调试台</span>
               </el-menu-item>
               <el-menu-item index="5">
-                <i class="el-icon-setting"></i>
+                <i class="el-icon-s-tools"></i>
                 <span slot="title">网站配置</span>
               </el-menu-item>
             </el-menu>

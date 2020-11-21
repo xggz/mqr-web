@@ -9,7 +9,7 @@
               fit="cover"></el-image>
           <span class="title">MQR</span>
         </div>
-        <span class="header-title">首页</span>
+        <span class="header-title">控制面板</span>
         <div class="account-wrap" v-show="isLogin">
           <el-dropdown placement="top" @command="accountHandler">
             <span class="el-dropdown-link">
