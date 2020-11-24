@@ -88,6 +88,8 @@
 <script>
 import {getRobotInfo, robotStart, robotStop, robotVerify, saveRobotInfo, saveRobotVerify} from "@/request/dashboard";
 import { getQQAvatar, getStateMemo } from "@/util/qq";
+// 定时刷新机器人信息
+let robotInfoTimer = null;
 
 export default {
   name: "DashboardLogin",
@@ -129,7 +131,10 @@ export default {
   },
   created() {
     this.initRobotInfo();
-    setInterval(this.initRobotInfo, 2000);
+    robotInfoTimer = setInterval(this.initRobotInfo, 2000);
+  },
+  destroyed() {
+    clearInterval(robotInfoTimer);
   },
   methods: {
     initRobotInfo() {
@@ -147,9 +152,15 @@ export default {
           this.robotInfo.password = robotInfo.password;
           this.robotInfo.state = robotInfo.state;
           this.robotInfo.qqAvatar = getQQAvatar(robotInfo.qq);
-          this.robotForm.qq = robotInfo.qq;
-          this.robotForm.nickname = robotInfo.nickname;
-          this.robotForm.password = robotInfo.password;
+          if (this.robotForm.qq == '') {
+            this.robotForm.qq = robotInfo.qq;
+          }
+          if (this.robotForm.nickname == '') {
+            this.robotForm.nickname = robotInfo.nickname;
+          }
+          if (this.robotForm.password == '') {
+            this.robotForm.password = robotInfo.password;
+          }
         }
         this.robotInfo.stateMemo = getStateMemo(this.robotInfo.state);
       }).finally(() => {

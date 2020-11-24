@@ -1,6 +1,6 @@
 const config = {
     // 基础url地址
-    baseUrl: '/api',
+    baseUrl: '/api/api',
     // 接口请求的超时 时间
     timeout: 60000,
     // 忽略授权校验的url列表
