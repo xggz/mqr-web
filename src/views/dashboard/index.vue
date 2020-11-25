@@ -25,11 +25,11 @@
       <el-tooltip class="item" effect="dark" content="配置账号" placement="left-start">
         <el-button type="primary" icon="el-icon-edit" circle @click="robotInfoEdit"></el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="停止运行" placement="left-start" v-if="robotInfo.state != 1">
-        <el-button icon="el-icon-switch-button" circle @click="robotStopConfirm"></el-button>
+      <el-tooltip class="item" effect="dark" content="停止运行" placement="left-start" v-if="robotInfo.state != 1 && robotInfo.state != 0">
+        <el-button type="danger" icon="el-icon-switch-button" circle @click="robotStopConfirm"></el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="启动运行" placement="left-start" v-if="robotInfo.state == 1">
-        <el-button icon="el-icon-video-play" circle @click="robotStartSubmit"></el-button>
+      <el-tooltip class="item" effect="dark" content="启动运行" placement="left-start" v-if="robotInfo.state == 1 && robotInfo.state != 0">
+        <el-button type="success" icon="el-icon-video-play" circle @click="robotStartSubmit"></el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="白名单配置" placement="left-start">
         <el-button icon="el-icon-check" circle></el-button>
@@ -44,13 +44,13 @@
     <el-dialog class="dialog-robot" title="机器人账号配置" :visible.sync="robotInfoVisible" width="400px" :append-to-body="true">
       <el-form ref="robotForm" :rules="robotRules" :model="robotForm" label-width="100px">
         <el-form-item label="QQ号" prop="qq">
-          <el-input ref="qq" v-model="robotForm.qq"></el-input>
+          <el-input ref="qq" v-model="robotForm.qq" @focus="robotFormFocus.qq = true" @blur="robotFormFocus.qq = false"></el-input>
         </el-form-item>
         <el-form-item label="QQ密码" prop="password">
-          <el-input type="password" ref="password" v-model="robotForm.password"></el-input>
+          <el-input type="password" ref="password" v-model="robotForm.password" @focus="robotFormFocus.password = true" @blur="robotFormFocus.password = false"></el-input>
         </el-form-item>
         <el-form-item label="账号昵称" prop="nickname">
-          <el-input ref="nickname" v-model="robotForm.nickname"></el-input>
+          <el-input ref="nickname" v-model="robotForm.nickname" @focus="robotFormFocus.nickname = true" @blur="robotFormFocus.nickname = false"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="robotInfoSubmit">保存</el-button>
@@ -104,6 +104,11 @@ export default {
         nickname: '',
         password: ''
       },
+      robotFormFocus: {
+        qq: false,
+        nickname: false,
+        password: false
+      },
       robotInfo: {
         qq: '',
         nickname: '',
@@ -146,13 +151,13 @@ export default {
           this.robotInfo.password = robotInfo.password;
           this.robotInfo.state = robotInfo.state;
           this.robotInfo.qqAvatar = getQQAvatar(robotInfo.qq);
-          if (this.robotForm.qq == '') {
+          if (this.robotForm.qq == '' && !this.robotFormFocus.qq) {
             this.robotForm.qq = robotInfo.qq;
           }
-          if (this.robotForm.nickname == '') {
+          if (this.robotForm.nickname == '' && !this.robotFormFocus.nickname) {
             this.robotForm.nickname = robotInfo.nickname;
           }
-          if (this.robotForm.password == '') {
+          if (this.robotForm.password == '' && !this.robotFormFocus.password) {
             this.robotForm.password = robotInfo.password;
           }
         }
