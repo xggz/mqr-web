@@ -2,7 +2,7 @@
   <div class="profile-box">
     <div class="box-header">
       <div class="avatar-wrapper">
-        <div class="avatar-box" @click="robotInfoEdit">
+        <div class="avatar-box rotate" @click="robotInfoEdit">
           <el-image :src="robotInfo.qqAvatar" fit="fit"
                     style="width: 120px; height: 120px; border-radius: 50%">
             <div slot="error" class="image-slot">机器人未配置</div>
@@ -17,7 +17,8 @@
           <el-tag size="small" effect="dark">{{ robotInfo.qq }}</el-tag>
         </span>
         <span style="cursor: pointer" @click="robotStateConfirm">
-          <el-button :type="robotInfo.state == 4 ? 'success':'info'" size="small">{{ robotInfo.stateMemo }}<i class="el-icon-loading el-icon--right"></i></el-button>
+          <el-button :type="robotInfo.state == 4 ? 'success':'info'" size="small">{{ robotInfo.stateMemo }}<i
+              class="el-icon--right" :class="{'el-icon-loading': robotInfo.state == 4}"></i></el-button>
         </span>
       </div>
     </div>
@@ -25,10 +26,12 @@
       <el-tooltip class="item" effect="dark" content="配置账号" placement="left-start">
         <el-button type="primary" icon="el-icon-edit" circle @click="robotInfoEdit"></el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="停止运行" placement="left-start" v-if="robotInfo.state != 1 && robotInfo.state != 0">
+      <el-tooltip class="item" effect="dark" content="停止运行" placement="left-start"
+                  v-if="robotInfo.state != 1 && robotInfo.state != 0">
         <el-button type="danger" icon="el-icon-switch-button" circle @click="robotStopConfirm"></el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="启动运行" placement="left-start" v-if="robotInfo.state == 1 && robotInfo.state != 0">
+      <el-tooltip class="item" effect="dark" content="启动运行" placement="left-start"
+                  v-if="robotInfo.state == 1 && robotInfo.state != 0">
         <el-button type="success" icon="el-icon-video-play" circle @click="robotStartSubmit"></el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="白名单配置" placement="left-start">
@@ -41,16 +44,20 @@
         <el-button icon="el-icon-setting" circle></el-button>
       </el-tooltip>
     </div>
-    <el-dialog class="dialog-robot" title="机器人账号配置" :visible.sync="robotInfoVisible" width="400px" :append-to-body="true">
+    <el-dialog class="dialog-robot" title="机器人账号配置" :visible.sync="robotInfoVisible" width="400px"
+               :append-to-body="true">
       <el-form ref="robotForm" :rules="robotRules" :model="robotForm" label-width="100px">
         <el-form-item label="QQ号" prop="qq">
-          <el-input ref="qq" v-model="robotForm.qq" @focus="robotFormFocus.qq = true" @blur="robotFormFocus.qq = false"></el-input>
+          <el-input ref="qq" v-model="robotForm.qq" @focus="robotFormFocus.qq = true"
+                    @blur="robotFormFocus.qq = false"></el-input>
         </el-form-item>
         <el-form-item label="QQ密码" prop="password">
-          <el-input type="password" ref="password" v-model="robotForm.password" @focus="robotFormFocus.password = true" @blur="robotFormFocus.password = false"></el-input>
+          <el-input type="password" ref="password" v-model="robotForm.password" @focus="robotFormFocus.password = true"
+                    @blur="robotFormFocus.password = false"></el-input>
         </el-form-item>
         <el-form-item label="账号昵称" prop="nickname">
-          <el-input ref="nickname" v-model="robotForm.nickname" @focus="robotFormFocus.nickname = true" @blur="robotFormFocus.nickname = false"></el-input>
+          <el-input ref="nickname" v-model="robotForm.nickname" @focus="robotFormFocus.nickname = true"
+                    @blur="robotFormFocus.nickname = false"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="robotInfoSubmit">保存</el-button>
@@ -58,24 +65,18 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog title="提示" :visible.sync="robotStopVisible" width="260px">
-      <span>确定停止机器人运行吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="robotStopVisible = false">取 消</el-button>
-        <el-button type="primary" @click="robotStopSubmit">确 定</el-button>
-      </span>
-    </el-dialog>
     <el-dialog class="robot-state-dialog" title="机器人状态" :visible.sync="robotStateVisible" width="460px">
       <h2 class="title">{{ robotInfo.stateMemo }}</h2>
       <div v-if="robotVerify.type == 'URL'">
-        <el-link type="success" :href="robotVerify.content" target="_blank">如果下面无法显示二维码，点击这里新窗口打开<i class="el-icon-link el-icon--right"></i></el-link>
+        <el-link type="success" :href="robotVerify.content" target="_blank">如果下面无法显示二维码，点击这里新窗口打开<i
+            class="el-icon-link el-icon--right"></i></el-link>
         <iframe class="verify-iframe" :src="robotVerify.content"></iframe>
       </div>
       <div class="verify-img-box" v-if="robotVerify.type == 'IMG'">
-        <img :src="'data:image/png;base64,'+robotVerify.content" />
+        <img :src="'data:image/png;base64,'+robotVerify.content"/>
       </div>
       <div v-show="robotVerify.type == 'IMG'">
-        <el-input v-model="verifyCode" type="primary" placeholder="请输入验证信息" />
+        <el-input v-model="verifyCode" type="primary" placeholder="请输入验证信息"/>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="robotStateVisible = false">取 消</el-button>
@@ -87,7 +88,7 @@
 
 <script>
 import {getRobotInfo, robotStart, robotStop, robotVerify, saveRobotInfo, saveRobotVerify} from "@/request/dashboard";
-import { getQQAvatar, getStateMemo } from "@/util/qq";
+import {getQQAvatar, getStateMemo} from "@/util/qq";
 // 定时刷新机器人信息
 let robotInfoTimer = null;
 
@@ -96,7 +97,6 @@ export default {
   data() {
     return {
       robotInfoVisible: false,
-      robotStopVisible: false,
       robotStateVisible: false,
       verifyCode: '',
       robotForm: {
@@ -123,13 +123,13 @@ export default {
       },
       robotRules: {
         qq: [
-          { required: true, message: 'QQ号不能为空', trigger: 'blur' },
+          {required: true, message: 'QQ号不能为空', trigger: 'blur'},
         ],
         password: [
-          { required: true, message: 'QQ密码不能为空', trigger: 'blur' }
+          {required: true, message: 'QQ密码不能为空', trigger: 'blur'}
         ],
         nickname: [
-          { required: true, message: '账号昵称不能为空', trigger: 'blur' }
+          {required: true, message: '账号昵称不能为空', trigger: 'blur'}
         ]
       }
     }
@@ -206,7 +206,7 @@ export default {
       });
       robotStart().then(() => {
         this.$notify({
-          title: '启动成功',
+          title: '启动中...',
           message: '请观察机器人头像下方动态，看是否需要登录验证',
           type: 'success',
           duration: 0
@@ -216,20 +216,19 @@ export default {
       });
     },
     robotStopConfirm() {
-      this.robotStopVisible = true;
-    },
-    robotStopSubmit() {
-      let stopLoading = this.$loading({
-        lock: true,
-        text: '停止中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.8)'
-      });
-      robotStop().then(() => {
-        this.$message.success('已停止运行');
-      }).finally(() => {
-        stopLoading.close();
-        this.robotStopVisible = false;
+      this.$confirm('确认停止机器人运行吗？').then(() => {
+        let stopLoading = this.$loading({
+          lock: true,
+          text: '停止中',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.8)'
+        });
+        robotStop().then(() => {
+          this.$message.success('已停止运行');
+        }).finally(() => {
+          stopLoading.close();
+        });
+      }).catch(() => {
       });
     },
     robotStateConfirm() {
@@ -308,6 +307,7 @@ export default {
   align-items: center;
   margin-top: 30px;
   font-style: oblique;
+
   span {
     display: flex;
     align-items: center;
@@ -341,6 +341,7 @@ export default {
   text-align: center;
   margin-bottom: 20px;
 }
+
 </style>
 
 <style scoped>
