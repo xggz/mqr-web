@@ -138,12 +138,6 @@ export default {
   },
   methods: {
     initRobotInfo() {
-      let loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(255, 255, 255, 0.8)'
-      });
       getRobotInfo().then(res => {
         let robotInfo = res.data.data;
         if (robotInfo != null) {
@@ -163,9 +157,7 @@ export default {
           }
         }
         this.robotInfo.stateMemo = getStateMemo(this.robotInfo.state);
-      }).finally(() => {
-        loading.close();
-      })
+      });
     },
     robotInfoEdit() {
       this.robotInfoVisible = true;
