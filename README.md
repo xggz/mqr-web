@@ -1,5 +1,5 @@
 # mqr-web
-[MQR](https://gitee.com/molicloud/mqr)的前端ui仓库
+[MQR](https://github.com/xggz/mqr)的前端ui仓库
 
 ## Project setup
 ```
