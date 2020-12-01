@@ -17,8 +17,12 @@
           <el-tag size="small" effect="dark">{{ robotInfo.qq }}</el-tag>
         </span>
         <span style="cursor: pointer" @click="robotStateConfirm">
-          <el-button :type="robotInfo.state == 4 ? 'success':'info'" size="small">{{ robotInfo.stateMemo }}<i
-              class="el-icon--right" :class="{'el-icon-loading': robotInfo.state == 4}"></i></el-button>
+          <el-button
+              :type="robotInfo.state == 4 ? 'success':'info'" size="small"
+          >
+            {{ robotInfo.stateMemo }}
+            <i class="el-icon--right" :class="{'el-icon-loading': robotInfo.state == 4}"/>
+          </el-button>
         </span>
       </div>
     </div>
@@ -26,12 +30,22 @@
       <el-tooltip class="item" effect="dark" content="配置账号" placement="left-start">
         <el-button type="primary" icon="el-icon-edit" circle @click="robotInfoEdit"></el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="停止运行" placement="left-start"
-                  v-if="robotInfo.state != 1 && robotInfo.state != 0">
+      <el-tooltip
+          class="item"
+          effect="dark"
+          content="停止运行"
+          placement="left-start"
+          v-if="robotInfo.state != 1 && robotInfo.state != 0"
+      >
         <el-button type="danger" icon="el-icon-switch-button" circle @click="robotStopConfirm"></el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="启动运行" placement="left-start"
-                  v-if="robotInfo.state == 1 && robotInfo.state != 0">
+      <el-tooltip
+          class="item"
+          effect="dark"
+          content="启动运行"
+          placement="left-start"
+          v-if="robotInfo.state == 1 && robotInfo.state != 0"
+      >
         <el-button type="success" icon="el-icon-video-play" circle @click="robotStartSubmit"></el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="白名单配置" placement="left-start">
@@ -44,20 +58,41 @@
         <el-button icon="el-icon-setting" circle></el-button>
       </el-tooltip>
     </div>
-    <el-dialog class="dialog-robot" title="机器人账号配置" :visible.sync="robotInfoVisible" width="400px"
-               :append-to-body="true">
+    <el-dialog class="dialog-robot" title="机器人账号配置" :visible.sync="robotInfoVisible" :append-to-body="true">
       <el-form ref="robotForm" :rules="robotRules" :model="robotForm" label-width="100px">
         <el-form-item label="QQ号" prop="qq">
-          <el-input ref="qq" v-model="robotForm.qq" @focus="robotFormFocus.qq = true"
-                    @blur="robotFormFocus.qq = false"></el-input>
+          <el-input
+              ref="qq"
+              v-model="robotForm.qq"
+              @focus="robotFormFocus.qq = true"
+              @blur="robotFormFocus.qq = false"
+          />
         </el-form-item>
         <el-form-item label="QQ密码" prop="password">
-          <el-input type="password" ref="password" v-model="robotForm.password" @focus="robotFormFocus.password = true"
-                    @blur="robotFormFocus.password = false"></el-input>
+          <el-input
+              type="password"
+              ref="password"
+              v-model="robotForm.password"
+              @focus="robotFormFocus.password = true"
+              @blur="robotFormFocus.password = false"
+          />
         </el-form-item>
         <el-form-item label="账号昵称" prop="nickname">
-          <el-input ref="nickname" v-model="robotForm.nickname" @focus="robotFormFocus.nickname = true"
-                    @blur="robotFormFocus.nickname = false"></el-input>
+          <el-input
+              ref="nickname"
+              v-model="robotForm.nickname"
+              @focus="robotFormFocus.nickname = true"
+              @blur="robotFormFocus.nickname = false"
+          />
+        </el-form-item>
+        <el-form-item prop="admins" label="管理员QQ">
+          <el-input
+              ref="admins"
+              type="textarea"
+              v-model="robotForm.admins"
+              @focus="robotFormFocus.admins = true"
+              @blur="robotFormFocus.admins = false"
+          />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="robotInfoSubmit">保存</el-button>
@@ -102,17 +137,20 @@ export default {
       robotForm: {
         qq: '',
         nickname: '',
-        password: ''
+        password: '',
+        admins: '',
       },
       robotFormFocus: {
         qq: false,
         nickname: false,
-        password: false
+        password: false,
+        admins: false,
       },
       robotInfo: {
         qq: '',
         nickname: '',
         password: '',
+        admins: '',
         state: 0,
         stateMemo: '',
         qqAvatar: ''
@@ -130,7 +168,7 @@ export default {
         ],
         nickname: [
           {required: true, message: '账号昵称不能为空', trigger: 'blur'}
-        ]
+        ],
       }
     }
   },
@@ -149,6 +187,7 @@ export default {
           this.robotInfo.qq = robotInfo.qq;
           this.robotInfo.nickname = robotInfo.nickname;
           this.robotInfo.password = robotInfo.password;
+          this.robotInfo.admins = robotInfo.admins.join(",")
           this.robotInfo.state = robotInfo.state;
           this.robotInfo.qqAvatar = getQQAvatar(robotInfo.qq);
           if (this.robotForm.qq == '' && !this.robotFormFocus.qq) {
@@ -159,6 +198,9 @@ export default {
           }
           if (this.robotForm.password == '' && !this.robotFormFocus.password) {
             this.robotForm.password = robotInfo.password;
+          }
+          if (this.robotForm.admins == '' && !this.robotFormFocus.admins) {
+            this.robotForm.admins = robotInfo.admins.join(",");
           }
         }
         this.robotInfo.stateMemo = getStateMemo(this.robotInfo.state);
@@ -180,10 +222,13 @@ export default {
             spinner: 'el-icon-loading',
             background: 'rgba(255, 255, 255, 0.8)'
           });
-          saveRobotInfo(this.robotForm).then(() => {
+          let robotForm = JSON.parse(JSON.stringify(this.robotForm));
+          robotForm.admins = robotForm.admins.split(",");
+          saveRobotInfo(robotForm).then(() => {
             this.robotInfo.qq = this.robotForm.qq;
             this.robotInfo.nickname = this.robotForm.nickname;
             this.robotInfo.password = this.robotForm.password;
+            this.robotInfo.admins = this.robotForm.admins;
             this.robotInfo.qqAvatar = getQQAvatar(this.robotForm.qq);
             this.robotInfo.state = 1;
             this.robotInfo.stateMemo = getStateMemo(1);
