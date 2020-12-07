@@ -109,4 +109,13 @@ export default {
     }
   }
 }
+@media screen and (max-width: 800px)  {
+  .auth-aside {
+    display: none !important;
+  }
+  .auth-container {
+    margin: 0 !important;
+    height: 100%;
+  }
+}
 </style>

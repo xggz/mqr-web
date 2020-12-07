@@ -387,6 +387,32 @@ export default {
   margin-bottom: 20px;
 }
 
+@media screen and (max-width: 800px)  {
+  .index-content {
+    min-width: 100% !important;
+  }
+  .profile-nav {
+    display: none;
+  }
+  .header-content {
+    padding: 0 20px;
+  }
+  .profile-container {
+    margin-top: 0 !important;;
+  }
+  .footer-content {
+    padding: 20px !important;
+  }
+  .dialog-robot > .el-dialog {
+    width: 100% !important;
+  }
+  .el-message-box {
+    width: 100% !important;
+  }
+  .robot-state-dialog > .el-dialog {
+    width: 100% !important;
+  }
+}
 </style>
 
 <style scoped>
