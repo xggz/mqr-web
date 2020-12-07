@@ -56,3 +56,22 @@ export function saveRobotVerify(code) {
         code: code
     });
 }
+
+/**
+ * 获取白名单配置
+ *
+ * @returns {Promise}
+ */
+export function getRobotAllowList() {
+    return getQuery('/sys-setting/robot-allow-list', null);
+}
+
+/**
+ * 保存白名单配置
+ *
+ * @param data
+ * @returns {Promise}
+ */
+export function saveRobotAllowList(data) {
+    return postBody('/sys-setting/robot-allow-list', data);
+}

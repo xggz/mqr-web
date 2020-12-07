@@ -49,13 +49,10 @@
         <el-button type="success" icon="el-icon-video-play" circle @click="robotStartSubmit"></el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="白名单配置" placement="left-start">
-        <el-button icon="el-icon-check" circle></el-button>
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="黑名单配置" placement="left-start">
-        <el-button icon="el-icon-close" circle></el-button>
+        <el-button type="primary" icon="el-icon-postcard" circle @click="allowListConfirm"></el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="事件设置" placement="left-start">
-        <el-button icon="el-icon-setting" circle></el-button>
+        <el-button type="primary" icon="el-icon-setting" circle></el-button>
       </el-tooltip>
     </div>
     <el-dialog class="dialog-robot" title="机器人账号配置" :visible.sync="robotInfoVisible" :append-to-body="true">
@@ -118,11 +115,55 @@
         <el-button v-show="robotInfo.state == 2" type="primary" @click="robotStateSubmit">提交验证</el-button>
       </span>
     </el-dialog>
+    <el-dialog class="allow-list-dialog" title="白名单配置" :visible.sync="allowListVisible" width="460px">
+      <el-form ref="allowListForm" :model="allowListForm" label-width="120px">
+        <el-form-item label="开启群白名单" prop="groupAllowListSwitch">
+          <el-switch v-model="allowListForm.groupAllowListSwitch"></el-switch>
+        </el-form-item>
+        <el-form-item label="群白名单" prop="groupAllowList">
+          <el-select
+              :disabled="!allowListForm.groupAllowListSwitch"
+              v-model="allowListForm.groupAllowList"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              placeholder="多个用回车键确认">
+          </el-select>
+        </el-form-item>
+        <el-form-item label="开启好友白名单" prop="friendAllowListSwitch">
+          <el-switch v-model="allowListForm.friendAllowListSwitch"></el-switch>
+        </el-form-item>
+        <el-form-item label="好友白名单" prop="friendAllowList">
+          <el-select
+              :disabled="!allowListForm.friendAllowListSwitch"
+              v-model="allowListForm.friendAllowList"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              placeholder="多个用回车键确认">
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="allowListSubmit">保存</el-button>
+          <el-button @click="allowListVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {getRobotInfo, robotStart, robotStop, robotVerify, saveRobotInfo, saveRobotVerify} from "@/request/dashboard";
+import {
+  getRobotAllowList,
+  getRobotInfo,
+  robotStart,
+  robotStop,
+  robotVerify, saveRobotAllowList,
+  saveRobotInfo,
+  saveRobotVerify
+} from "@/request/dashboard";
 import {getQQAvatar, getStateMemo} from "@/util/qq";
 // 定时刷新机器人信息
 let robotInfoTimer = null;
@@ -133,6 +174,7 @@ export default {
     return {
       robotInfoVisible: false,
       robotStateVisible: false,
+      allowListVisible: false,
       verifyCode: '',
       robotForm: {
         qq: '',
@@ -158,6 +200,12 @@ export default {
       robotVerify: {
         type: '',
         content: ''
+      },
+      allowListForm: {
+        groupAllowList: '',
+        friendAllowList: '',
+        groupAllowListSwitch: false,
+        friendAllowListSwitch: false
       },
       robotRules: {
         qq: [
@@ -301,6 +349,33 @@ export default {
         verifyLoading.close();
         this.robotStateVisible = false;
       });
+    },
+    allowListConfirm() {
+      this.allowListVisible = true;
+      getRobotAllowList().then(res => {
+        let allowList = res.data.data;
+        if (allowList != null) {
+          this.allowListForm.groupAllowListSwitch = allowList.groupAllowListSwitch;
+          this.allowListForm.groupAllowList = allowList.groupAllowList;
+          this.allowListForm.friendAllowListSwitch = allowList.friendAllowListSwitch;
+          this.allowListForm.friendAllowList = allowList.friendAllowList;
+        }
+      });
+    },
+    allowListSubmit() {
+      let allowListLoading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(255, 255, 255, 0.8)'
+      });
+      let allowListForm = JSON.parse(JSON.stringify(this.allowListForm));
+      saveRobotAllowList(allowListForm).then(() => {
+        this.$message.success('保存成功');
+      }).finally(() => {
+        allowListLoading.close();
+        this.allowListVisible = false;
+      });
     }
   }
 }
@@ -418,6 +493,6 @@ export default {
 <style scoped>
 .box-nav >>> .el-button + .el-button {
   margin-left: 0px !important;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 </style>
