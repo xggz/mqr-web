@@ -363,6 +363,10 @@ export default {
       });
     },
     allowListSubmit() {
+      if (this.robotInfo.state != null && this.robotInfo.state != 0 && this.robotInfo.state != 1) {
+        this.$message.warning('请先停止机器人后再编辑');
+        return;
+      }
       let allowListLoading = this.$loading({
         lock: true,
         text: 'Loading',
