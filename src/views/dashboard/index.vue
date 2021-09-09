@@ -99,10 +99,9 @@
     </el-dialog>
     <el-dialog class="robot-state-dialog" title="机器人状态" :visible.sync="robotStateVisible" width="460px">
       <h2 class="title">{{ robotInfo.stateMemo }}</h2>
-      <div v-if="robotVerify.type == 'URL'">
-        <el-link type="success" :href="robotVerify.content" target="_blank">如果下面无法显示二维码，点击这里新窗口打开<i
-            class="el-icon-link el-icon--right"></i></el-link>
-        <iframe class="verify-iframe" :src="robotVerify.content"></iframe>
+      <div v-if="robotVerify.type == 'URL'" style="text-align: center;">
+        <el-tag>请用手机QQ扫描下面二维码，完成验证后再点击下面的提交验证按钮</el-tag>
+        <img :src="'data:image/png;base64,'+robotVerify.content"/>
       </div>
       <div class="verify-img-box" v-if="robotVerify.type == 'IMG'">
         <img :src="'data:image/png;base64,'+robotVerify.content"/>
