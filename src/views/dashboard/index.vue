@@ -99,14 +99,40 @@
     </el-dialog>
     <el-dialog class="robot-state-dialog" title="机器人状态" :visible.sync="robotStateVisible" width="460px">
       <h2 class="title">{{ robotInfo.stateMemo }}</h2>
+      <div v-if="robotVerify.type == 'SMS'" style="text-align: center;">
+        <el-tag>请接收短信后，填入下方输入框，再点击下面的提交验证按钮</el-tag>
+        <div style="display: flex;justify-content: center; align-content: center;font-size: 18px;margin: 20px 0;">{{ robotVerify.content }}</div>
+      </div>
+      <div v-if="robotVerify.type == 'SLIDER'" style="text-align: center;">
+        <el-tag>请先阅读<a href="https://bbs.molicloud.com/thread/105" target="_blank">滑块验证教程<i class="el-icon-top-right el-icon--right"></i></a>，再点击下面的提交验证按钮</el-tag>
+        <el-input
+            style="margin: 20px 0;"
+            type="textarea"
+            :rows="5"
+            placeholder="验证地址"
+            readonly
+            v-model="robotVerify.content">
+        </el-input>
+      </div>
       <div v-if="robotVerify.type == 'URL'" style="text-align: center;">
+        <el-tag>请在新窗口打开验证地址，完成验证后再点击下面的提交验证按钮</el-tag>
+        <el-input
+            style="margin: 20px 0;"
+            type="textarea"
+            :rows="5"
+            placeholder="验证地址"
+            readonly
+            v-model="robotVerify.content">
+        </el-input>
+      </div>
+      <div v-if="robotVerify.type == 'QRCODE'" style="text-align: center;">
         <el-tag>请用手机QQ扫描下面二维码，完成验证后再点击下面的提交验证按钮</el-tag>
         <img :src="'data:image/png;base64,'+robotVerify.content"/>
       </div>
       <div class="verify-img-box" v-if="robotVerify.type == 'IMG'">
         <img :src="'data:image/png;base64,'+robotVerify.content"/>
       </div>
-      <div v-show="robotVerify.type == 'IMG'">
+      <div v-show="robotVerify.type == 'IMG' || robotVerify.type == 'SLIDER' || robotVerify.type == 'SMS'">
         <el-input v-model="verifyCode" type="primary" placeholder="请输入验证信息"/>
       </div>
       <span slot="footer" class="dialog-footer">
